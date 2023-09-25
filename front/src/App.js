@@ -88,7 +88,7 @@ function App() {
               <div id='column2'>공지사항</div>
             </div>
             <div id='column'>
-            <h1>시간표</h1>
+            <h1>오늘의 시간표</h1>
       <table>
         <thead>
           <tr>
@@ -114,7 +114,7 @@ function App() {
           </div>
           <Sidebar width={320}></Sidebar>
         </body>
-        <div>
+        <div class='email'>
             문의 이메일 : gksrbgks713@skuniv.ac.kr
         </div>
         <footer>
