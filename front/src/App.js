@@ -23,8 +23,14 @@ function App() {
     const toggleMenu = () => {
       setMenu(isOpen => !isOpen);   // boolean으로 on/off 
     }
-
   }
+
+  const [timetable, setTimetable] = useState([
+    { time: '9:00 AM - 10:00 AM', subject: '수학' },
+    { time: '10:15 AM - 11:15 AM', subject: '과학' },
+    { time: '11:30 AM - 12:30 PM', subject: '영어' },
+  ]);
+
 
   return (
     <div class="full">
@@ -50,7 +56,24 @@ function App() {
               </div>
               <div id='column2'>공지사항</div>
             </div>
-            <div id='column'>시간표</div>
+            <div id='column'>
+            <table>
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+        </thead>
+        <tbody>
+          {timetable.map((item, index) => (
+            <tr key={index}>
+              <td>{item.time}</td>
+              <td>{item.subject}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+            </div>
           </div>
           <Sidebar width={320}></Sidebar>
         </body>
