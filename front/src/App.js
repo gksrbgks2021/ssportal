@@ -24,13 +24,44 @@ function App() {
       setMenu(isOpen => !isOpen);   // boolean으로 on/off 
     }
   }
+  const timeSlots = [
+    '09-10',
+    '10-11',
+    '11-12',
+    '12-13',
+    '13-14',
+    '14-15',
+    '15-16',
+    '16-17',
+    '17-18'
+  ];
 
-  const [timetable, setTimetable] = useState([
-    { time: '9:00 AM - 10:00 AM', subject: '수학' },
-    { time: '10:15 AM - 11:15 AM', subject: '과학' },
-    { time: '11:30 AM - 12:30 PM', subject: '영어' },
-  ]);
+  // 초기 시간표 데이터 (빈 과목 배열)
+  const initialTimetable = timeSlots.map((slot) => ({
+    time: slot,
+    subject: '',
+  }));
 
+  // 시간표 데이터를 state로 관리
+  const [timetable, setTimetable] = useState(initialTimetable);
+
+  // 과목 색상 매핑
+  const subjectColors = {
+    '수학': 'red',
+    '과학': 'blue',
+    '영어': 'green',
+    // 추가 과목 및 색상을 여기에 추가할 수 있습니다.
+  };
+
+  // 과목을 선택하여 해당 시간대에 색상을 지정
+  const handleSubjectSelection = (index) => {
+    const selectedSubject = prompt('과목을 입력하세요:');
+    if (selectedSubject) {
+      const updatedTimetable = [...timetable];
+      updatedTimetable[index].subject = selectedSubject;
+      setTimetable(updatedTimetable);
+    }
+  };
 
   return (
     <div class="full">
@@ -57,7 +88,8 @@ function App() {
               <div id='column2'>공지사항</div>
             </div>
             <div id='column'>
-            <table>
+            <h1>시간표</h1>
+      <table>
         <thead>
           <tr>
             <th>시간</th>
@@ -68,7 +100,12 @@ function App() {
           {timetable.map((item, index) => (
             <tr key={index}>
               <td>{item.time}</td>
-              <td>{item.subject}</td>
+              <td
+                style={{ backgroundColor: subjectColors[item.subject] || 'white' }}
+                onClick={() => handleSubjectSelection(index)}
+              >
+                {item.subject}
+              </td>
             </tr>
           ))}
         </tbody>
