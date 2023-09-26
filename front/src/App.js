@@ -17,13 +17,60 @@ function App() {
     const year = new Date().getFullYear();
     return year;
   }
+  const thisDate=()=>{
+    const year=new Date().getFullYear().toString();
+    const month=new Date().getMonth().toString();
+    const date=new Date().getDate().toString();
+    const day=year+'년 '+month+'월 '+date+'일';
+    return day;
+  }
 
   const Header = () => {
     const [isOpen, setMenu] = useState(false);  // 메뉴 초기값 false set
     const toggleMenu = () => {
       setMenu(isOpen => !isOpen);   // boolean으로 on/off 
     }
+  }
 
+  const timeSlots = [
+    '09-10',
+    '10-11',
+    '11-12',
+    '12-13',
+    '13-14',
+    '14-15',
+    '15-16',
+    '16-17',
+    '17-18'
+  ];
+
+  // 초기 시간표 데이터 (빈 과목 배열)
+  const initialTimetable = timeSlots.map((slot) => ({
+    time: slot,
+    subject: '',
+  }));
+
+  // 시간표 데이터를 state로 관리
+  const [timetable, setTimetable] = useState(initialTimetable);
+
+  // 과목 색상 매핑
+  const subjectColors = {
+    '수학': 'red',
+    '과학': 'blue',
+    '영어': 'green',
+    '국어': 'yellow',
+    '체육': 'purple'
+    // 추가 과목 및 색상을 여기에 추가할 수 있습니다.
+  };
+
+  // 과목을 선택하여 해당 시간대에 색상을 지정
+  const handleSubjectSelection = (index) => {
+    const selectedSubject = prompt('과목을 입력하세요:');
+    if (selectedSubject) {
+      const updatedTimetable = [...timetable];
+      updatedTimetable[index].subject = selectedSubject;
+      setTimetable(updatedTimetable);
+    }
   }
 
   return (
@@ -50,7 +97,32 @@ function App() {
               </div>
               <div id='column2'>공지사항</div>
             </div>
-            <div id='column'>시간표</div>
+            <div>
+              <div id='column'>
+                <h1>오늘의 시간표</h1>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>시간</th>
+                        <th>과목</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {timetable.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.time}</td>
+                          <td
+                            style={{ backgroundColor: subjectColors[item.subject] || 'white' }}
+                            onClick={() => handleSubjectSelection(index)}
+                          >
+                            {item.subject}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
           </div>
           <Sidebar width={320}></Sidebar>
         </body>
@@ -75,7 +147,7 @@ function App() {
           문의 이메일 : gksrbgks713@skuniv.ac.kr
         </div>
         <footer>
-          명Kay검진 &copy; <span>{thisYear()}</span>
+          <span>{thisDate()}</span> &copy; 명Kay검진
         </footer>
 
       </div>
