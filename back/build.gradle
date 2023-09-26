@@ -35,7 +35,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-def projectDir = "C:/Users/admin/Desktop/springReact";
+def projectDir = "C:/project/ssportal/ssportal";
 def reactDir = "$projectDir/front"
 
 sourceSets{
