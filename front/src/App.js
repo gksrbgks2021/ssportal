@@ -34,7 +34,18 @@ function App() {
         <body>
           <div class="container">
             <div id='column' class='symbol'>배너
+<<<<<<< HEAD
             </div>
+=======
+              <nav>
+                <ul className="header-wrapper">
+                  <li><a href="https://www.skuniv.ac.kr/main">학교 홈페이지 바로가기</a></li>
+                  <li><a href="https://www.skuniv.ac.kr/notice">학교 공지사항 바로가기</a></li>
+                  <li><a href="https://www.skuniv.ac.kr/academic_calendar">학사일정 바로가기</a></li>
+                  <li><a href="#"><input type="text" name="search" placeholder="검색어를 입력하세요" autoComplete='off' /></a></li>
+                </ul>
+              </nav></div>
+>>>>>>> a7c126fb702e7c15b6230cd6ae1685d0e1d13781
             <div id='column'>
               <div id='column2'>로그인<br />
                 <input type="text" id='id' value='ID 입력' />
@@ -44,6 +55,7 @@ function App() {
               <div id='column2'>공지사항</div>
             </div>
             <div id='column'>시간표</div>
+<<<<<<< HEAD
             <div>
             <nav>
                 <ul className="header-wrapper">
@@ -66,6 +78,16 @@ function App() {
         <footer>
           명Kay검진 &copy; <span>{thisYear()}</span>
 
+=======
+          </div>
+          <Sidebar width={320}></Sidebar>
+        </body>
+        <div>
+            문의 이메일 : gksrbgks713@skuniv.ac.kr
+        </div>
+        <footer>
+          명Kay검진 &copy; <span>{thisYear()}</span>
+>>>>>>> a7c126fb702e7c15b6230cd6ae1685d0e1d13781
         </footer>
 
       </div>

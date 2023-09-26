@@ -63,8 +63,11 @@ footer{
   position: absolute;
   left: -376px;
   transition: 1s;
+<<<<<<< HEAD
   }
 
   #refe{
     border-width: 100px;
+=======
+>>>>>>> a7c126fb702e7c15b6230cd6ae1685d0e1d13781
   }
