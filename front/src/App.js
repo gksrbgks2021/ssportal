@@ -59,6 +59,7 @@ function App() {
         </div>
         <footer>
           명Kay검진 &copy; <span>{thisYear()}</span>
+          검진받아라
         </footer>
 
       </div>
