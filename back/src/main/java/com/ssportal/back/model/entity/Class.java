@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Data
 @Entity
-@Table(name="class")
+@Table(name="Class")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -37,9 +37,9 @@ public class Class {
 
     @ManyToOne(fetch = FetchType.LAZY) // 여러 강의는 한 명의 교수를 가진다.
     @JoinColumn(name="p_code")
-    private String pCode;//객체를 담아야함.
+    private Professor professor;//객체를 담아야함.
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @Column(name="t_code",length=10)
-    private String tCode;//객체를 담아야함
+    @JoinColumn(name="t_code")
+    private ClassTime classTime;//객체를 담아야함
 }
