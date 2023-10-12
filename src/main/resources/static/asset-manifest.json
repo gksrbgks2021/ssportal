@@ -1,5 +1,6 @@
 {
   "files": {
+<<<<<<< HEAD
     "main.css": "/nameContextRoot/static/css/main.35939cd6.css",
     "main.js": "/nameContextRoot/static/js/main.8c9db858.js",
     "static/js/787.71df535f.chunk.js": "/nameContextRoot/static/js/787.71df535f.chunk.js",
@@ -13,5 +14,19 @@
   "entrypoints": [
     "static/css/main.35939cd6.css",
     "static/js/main.8c9db858.js"
+=======
+    "main.css": "/nameContextRoot/static/css/main.180c4ee2.css",
+    "main.js": "/nameContextRoot/static/js/main.3d8461c4.js",
+    "static/js/787.71df535f.chunk.js": "/nameContextRoot/static/js/787.71df535f.chunk.js",
+    "static/media/skuniv.jpg": "/nameContextRoot/static/media/skuniv.4ed0ad90d64073f8a961.jpg",
+    "index.html": "/nameContextRoot/index.html",
+    "main.180c4ee2.css.map": "/nameContextRoot/static/css/main.180c4ee2.css.map",
+    "main.3d8461c4.js.map": "/nameContextRoot/static/js/main.3d8461c4.js.map",
+    "787.71df535f.chunk.js.map": "/nameContextRoot/static/js/787.71df535f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.180c4ee2.css",
+    "static/js/main.3d8461c4.js"
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
   ]
 }

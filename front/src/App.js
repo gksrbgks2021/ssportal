@@ -17,6 +17,7 @@ function App() {
     const year = new Date().getFullYear();
     return year;
   }
+<<<<<<< HEAD
   const thisDate=()=>{
     const year=new Date().getFullYear().toString();
     const month=new Date().getMonth().toString();
@@ -24,12 +25,15 @@ function App() {
     const day=year+'년 '+month+'월 '+date+'일';
     return day;
   }
+=======
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
 
   const Header = () => {
     const [isOpen, setMenu] = useState(false);  // 메뉴 초기값 false set
     const toggleMenu = () => {
       setMenu(isOpen => !isOpen);   // boolean으로 on/off 
     }
+<<<<<<< HEAD
   }
 
   const timeSlots = [
@@ -71,6 +75,9 @@ function App() {
       updatedTimetable[index].subject = selectedSubject;
       setTimetable(updatedTimetable);
     }
+=======
+
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
   }
 
   return (
@@ -97,6 +104,7 @@ function App() {
               </div>
               <div id='column2'>공지사항</div>
             </div>
+<<<<<<< HEAD
             <div>
               <div id='column'>
                 <h1>오늘의 시간표</h1>
@@ -148,6 +156,17 @@ function App() {
         </div>
         <footer>
           <span>{thisDate()}</span> &copy; 명Kay검진
+=======
+            <div id='column'>시간표</div>
+          </div>
+          <Sidebar width={320}></Sidebar>
+        </body>
+        <div>
+            문의 이메일 : gksrbgks713@skuniv.ac.kr
+        </div>
+        <footer>
+          명Kay검진 &copy; <span>{thisYear()}</span>
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
         </footer>
 
       </div>

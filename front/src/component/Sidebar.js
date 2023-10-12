@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState } from "react";
 import styles from "./sidebar.module.css";
 import menu from "./image/menu.png"
+<<<<<<< HEAD
 
 {/*src 상위 디렉토리에서 import하는게 불가능하여 component 디렉토리
 내에서 image 디렉토리를 추가해야 함*/}
@@ -9,6 +10,11 @@ import menu from "./image/menu.png"
 내에서 image 디렉토리를 추가해야 함*/}
 
 
+=======
+{/*src 상위 디렉토리에서 import하는게 불가능하여 component 디렉토리
+내에서 image 디렉토리를 추가해야 함*/}
+
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
 const Sidebar = ({ width=280, children }) => {
   const [isOpen, setOpen] = useState(false);
   const [xPosition, setX] = useState(-width);
@@ -50,7 +56,11 @@ const Sidebar = ({ width=280, children }) => {
           className={styles.button} >
             {isOpen ? 
             <span>X</span> : <img src={menu} alr="contact open button" className={styles.openBtn}/>
+<<<<<<< HEAD
             }
+=======
+            }       // 각자 image 파일 챙겨가세요
+>>>>>>> 0bc6ba5925b8df178eb3c616d6bd9d8a10de7c19
           </button>
         <div className={styles.content}>{children}</div>
         <nav>

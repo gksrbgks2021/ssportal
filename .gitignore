@@ -1,4 +1,5 @@
 #스프링 git ignore ~
+.idea/*
 깃허브토큰.md
 HELP.md
 .back/.gradle
