@@ -1,0 +1,574 @@
+Index: back/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n\tid 'java'\r\n\tid 'org.springframework.boot' version '3.1.3'\r\n\tid 'io.spring.dependency-management' version '1.1.3'\r\n}\r\n\r\ngroup = 'com.ssportal'\r\nversion = '0.0.1-SNAPSHOT'\r\n\r\njava {\r\n\tsourceCompatibility = '17'\r\n}\r\n\r\nconfigurations {\r\n\tcompileOnly {\r\n\t\textendsFrom annotationProcessor\r\n\t}\r\n}\r\n\r\nrepositories {\r\n\tmavenCentral()\r\n}\r\n\r\ndependencies {\r\n\timplementation 'org.springframework.boot:spring-boot-starter-data-mongodb'\r\n\timplementation 'org.springframework.boot:spring-boot-starter-security'\r\n\timplementation 'org.springframework.boot:spring-boot-starter-web'\r\n\tcompileOnly 'org.projectlombok:lombok'\r\n\tannotationProcessor 'org.projectlombok:lombok'\r\n\ttestImplementation 'org.springframework.boot:spring-boot-starter-test'\r\n\ttestImplementation 'org.springframework.security:spring-security-test'\r\n}\r\n\r\ntasks.named('test') {\r\n\tuseJUnitPlatform()\r\n}\r\n\r\ndef projectDir = \"C:/project/ssportal/ssportal\";\r\ndef reactDir = \"$projectDir/front\"\r\n\r\nsourceSets{\r\n\tmain{\r\n\t\tresources{\r\n\t\t\tsrcDirs = [\"$projectDir/src/main/resources\"]\r\n\t\t}\r\n\t}\r\n}\r\n\r\nprocessResources{\r\n\tdependsOn \"copyReactBuildFiles\"\r\n}\r\n\r\ntasks.register('installReact', Exec) {\r\n\tworkingDir \"$reactDir\"\r\n\tinputs.dir \"$reactDir\"\r\n\tgroup = BasePlugin.BUILD_GROUP\r\n\r\n\tif (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {\r\n\t\tcommandLine \"npm.cmd\", \"audit\", \"fix\"\r\n\t\tcommandLine 'npm.cmd', 'install'\r\n\t} else {\r\n\t\tcommandLine \"npm\", \"audit\", \"fix\"\r\n\t\tcommandLine 'npm', 'install'\r\n\t}\r\n}\r\n\r\ntasks.register('buildReact', Exec) {\r\n\tdependsOn \"installReact\"\r\n\tworkingDir \"$reactDir\"\r\n\tinputs.dir \"$reactDir\"\r\n\tgroup = BasePlugin.BUILD_GROUP\r\n\r\n\tif (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {\r\n\t\tcommandLine \"npm.cmd\", \"run-script\", \"build\"\r\n\t} else {\r\n\t\tcommandLine \"npm\", \"run-script\", \"build\"\r\n\t}\r\n}\r\n\r\ntasks.register('copyReactBuildFiles', Copy) {\r\n\tdependsOn \"buildReact\"\r\n\tfrom \"$reactDir/build\"\r\n\tinto \"$projectDir/src/main/resources/static\"\r\n}\r\n/***\r\n * task 흐름\r\n copyReactBuildFiles > buildReact > installReact로 넘어감\r\n 역순으로 react 프로젝트를 build하기 위한 npm 명령어 실행\r\n React 프로젝트의 build 데이터가 /src/main/resources/static/하위로 copy\r\n react 빌드된 내용 기반 jar파일 생성\r\n */
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/build.gradle b/back/build.gradle
+--- a/back/build.gradle	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ b/back/build.gradle	(date 1697125270679)
+@@ -25,8 +25,13 @@
+ 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+ 	implementation 'org.springframework.boot:spring-boot-starter-security'
+ 	implementation 'org.springframework.boot:spring-boot-starter-web'
++	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
++	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
++
+ 	compileOnly 'org.projectlombok:lombok'
+ 	annotationProcessor 'org.projectlombok:lombok'
++	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
++
+ 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+ 	testImplementation 'org.springframework.security:spring-security-test'
+ }
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#스프링 git ignore ~\r\nHELP.md\r\n.back/.gradle\r\nback/build/\r\n!gradle/wrapper/gradle-wrapper.jar\r\n!**/back/src/main/**/build/\r\n!**/back/src/test/**/build/\r\n\r\n### STS ###\r\nback/.apt_generated\r\nback/.classpath\r\nback/.factorypath\r\nback/.project\r\nback/.setting\r\nback/.springBeans\r\nback/.sts4-cache\r\nback/bin/\r\n!**/back/src/main/**/bin/\r\n!**/back/src/test/**/bin/\r\n\r\n### IntelliJ IDEA ###\r\nback/.idea\r\nback/*.iws\r\nback/*.iml\r\nback/*.ipr\r\nback/out/\r\n!**/src/main/**/out/\r\n!**/src/test/**/out/\r\n\r\n### NetBeans ###\r\nback/nbproject/private/\r\nback/nbbuild/\r\nback/dist/\r\nback/nbdist/\r\nback/.nb-gradle/\r\n\r\n### VS Code ###\r\nback/.vscode/\r\n\r\n\r\n#리액트 git ignore ~\r\n# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.\r\n\r\n# front dependencies\r\n/front/node_modules\r\n/front/.pnp\r\n/front/.pnp.js\r\n\r\n# front testing\r\n/front/coverage\r\n\r\n# front production\r\n/front/build\r\n\r\n# front misc\r\n/front/.DS_Store\r\n/front/.env.local\r\n/front/.env.development.local\r\n/front/.env.test.local\r\n/front/.env.production.local\r\n\r\n/front/npm-debug.log*\r\n/front/yarn-debug.log*\r\n/front/yarn-error.log*\r\n\r\n\r\n/front/.env
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ b/.gitignore	(date 1697125420414)
+@@ -1,4 +1,5 @@
+ #스프링 git ignore ~
++깃허브토큰.md
+ HELP.md
+ .back/.gradle
+ back/build/
+Index: back/.gradle/buildOutputCleanup/cache.properties
+===================================================================
+diff --git a/back/.gradle/buildOutputCleanup/cache.properties b/back/.gradle/buildOutputCleanup/cache.properties
+deleted file mode 100644
+--- a/back/.gradle/buildOutputCleanup/cache.properties	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ /dev/null	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
+@@ -1,2 +0,0 @@
+-#Thu Sep 21 16:07:14 GMT+09:00 2023
+-gradle.version=8.2.1
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ /dev/null	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/스프링리액트.iml" filepath="$PROJECT_DIR$/.idea/스프링리액트.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+--- a/.idea/misc.xml	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ /dev/null	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/out" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/springreact.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/springreact.iml b/.idea/springreact.iml
+deleted file mode 100644
+--- a/.idea/springreact.iml	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ /dev/null	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$">
+-      <sourceFolder url="file://$MODULE_DIR$/back/src" isTestSource="false" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
++++ /dev/null	(revision 38e5bbb14ae4b333b007e6bada4fd0f361e5a422)
+@@ -1,8 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+-# Editor-based HTTP Client requests
+-/httpRequests/
+-# Datasource local storage ignored files
+-/dataSources/
+-/dataSources.local.xml
+Index: back/src/main/java/com/ssportal/back/model/entity/enums/Ctype.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/enums/Ctype.java b/back/src/main/java/com/ssportal/back/model/entity/enums/Ctype.java
+new file mode 100644
+--- /dev/null	(date 1697125270664)
++++ b/back/src/main/java/com/ssportal/back/model/entity/enums/Ctype.java	(date 1697125270664)
+@@ -0,0 +1,6 @@
++package com.ssportal.back.model.entity.enums;
++
++public enum Ctype {
++    MINOR, //부전공
++    MAJOR; //전공
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/Dept.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Dept.java b/back/src/main/java/com/ssportal/back/model/entity/Dept.java
+new file mode 100644
+--- /dev/null	(date 1697125270644)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Dept.java	(date 1697125270644)
+@@ -0,0 +1,19 @@
++package com.ssportal.back.model.entity;
++
++import jakarta.persistence.Column;
++import jakarta.persistence.Entity;
++import jakarta.persistence.Id;
++import jakarta.persistence.Table;
++import lombok.Data;
++
++@Entity
++@Table(name = "Dept")
++@Data
++public class Dept {
++    @Id
++    @Column(name = "d_code", length = 10)
++    private String dCode;
++
++    @Column(name = "d_name",length = 20)
++    private String dName;
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/Attendence.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Attendence.java b/back/src/main/java/com/ssportal/back/model/entity/Attendence.java
+new file mode 100644
+--- /dev/null	(date 1697125270636)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Attendence.java	(date 1697125270636)
+@@ -0,0 +1,36 @@
++package com.ssportal.back.model.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++
++import java.sql.Date;
++
++@Data
++@Entity
++@Table(name="Attendence")
++@NoArgsConstructor
++@Getter
++@Setter
++public class Attendence {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    @Column(name = "a_code", nullable = false, length = 10)
++    private String aCode;
++
++    @Column(name = "a_date", nullable = false)
++    private Date aDate;
++
++    @Column(name = "a_attendence", nullable = false, length = 10)
++    private String aAttendence;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 출결은 한 가지의 상태를 가진다.
++    @Column(name = "s_code", length = 10)
++    private Student sCode;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 학생은 한 가지의 학과를 가진다 ??????
++    @Column(name = "c_code", length = 10)
++    private Class cCode;
++}
+\ No newline at end of file
+Index: back/src/main/java/com/ssportal/back/model/entity/Record.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Record.java b/back/src/main/java/com/ssportal/back/model/entity/Record.java
+new file mode 100644
+--- /dev/null	(date 1697125270659)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Record.java	(date 1697125270659)
+@@ -0,0 +1,33 @@
++package com.ssportal.back.model.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++
++@Entity
++@Data
++@Table(name = "Record")
++public class Record {
++    @Id
++    @Column(name = "r_code", length = 10)
++    private String rCode;
++
++    @Column(name = "r_semester", length = 10)
++    private String rSemester;
++
++    @Column(name = "r_score")
++    private long rScore;
++
++    @Column(name = "r_grade",length = 5)
++    private String rGrade;
++
++    @Column(name="r_pnp")
++    private boolean rPnp;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 출결은 한 가지의 상태를 가진다.
++    @Column(name = "s_code", length = 10)
++    private Student sCode;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 학생은 한 가지의 학과를 가진다 ??????
++    @Column(name = "c_code", length = 10)
++    private Class cCode;
++}
+Index: 회의록md/10월/1012.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/회의록md/10월/1012.md b/회의록md/10월/1012.md
+new file mode 100644
+--- /dev/null	(date 1697125270669)
++++ b/회의록md/10월/1012.md	(date 1697125270669)
+@@ -0,0 +1,34 @@
++
++![아마존](https://sleet-brisket-9e2.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F3d145f38-c386-4692-bfb2-4472c6962773%2F4b7598f8-303d-4a41-8e08-3c3ae46cdd4a%2FUntitled.png?table=block&id=730d1555-c398-4b55-97c5-58592001b2e4&spaceId=3d145f38-c386-4692-bfb2-4472c6962773&width=2000&userId=&cache=v2)
++
++### md 파일 만듬
++
++```java
++System.out.println("hello");
++System.out.println("선명수바보");
++
++```
++
++
++서버리스 컴퓨터이다.
++
++- 서버를 띄우지 않고 간단한 코드를 실행시킴
++- 특정 기간 또는 특정 주기로 코드를 실행시켜야하는 경우
++- 트리거가 실행될때만 코드를 실행시키고 싶은 경우
++- 요청을 받으면 내부에 요청 큐 방식이 있어서, 이것을
++
++람다 function 은, AWS 리소스이다.
++
++람다는 사용 시간이 아닌, 요청 횟수 에대해 비용이 산정된다.
++
++### 권한
++
++- 람다 권한이 있어야 호출을 할 수 있다.
++
++### 실습
++
++aws람다 함수에 간단한 메소드를 매핑해보자.
++
++할수있다.
++
++# 구글드ㅡ라이브 할피료업 ㅅOK? 
+\ No newline at end of file
+Index: back/src/main/java/com/ssportal/back/model/entity/Enrollment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Enrollment.java b/back/src/main/java/com/ssportal/back/model/entity/Enrollment.java
+new file mode 100644
+--- /dev/null	(date 1697125270654)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Enrollment.java	(date 1697125270654)
+@@ -0,0 +1,33 @@
++package com.ssportal.back.model.entity;
++
++
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++
++import java.sql.Time;
++import java.util.Date;
++
++@Data
++@Entity
++@Table(name="Enrollment")
++@NoArgsConstructor
++@Getter
++@Setter
++public class Enrollment {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    @Column(name="e_code", nullable = false, length = 10)
++    private int eCode;
++
++    @Column(name="e_date")
++    private Time eDate;
++
++    @Column(name="s_code", length=10)
++    private Student sCode;
++
++    @Column(name="c_code", length=10)
++    private Class cCode;
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/Student.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Student.java b/back/src/main/java/com/ssportal/back/model/entity/Student.java
+new file mode 100644
+--- /dev/null	(date 1697125270661)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Student.java	(date 1697125270661)
+@@ -0,0 +1,57 @@
++package com.ssportal.back.model.entity;
++
++import java.sql.Date;
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++
++@Data
++@Entity
++@Table(name="Student")
++@NoArgsConstructor
++@Getter
++@Setter
++
++public class Student {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    @Column(name="s_code", nullable = false, length = 10)
++    private String sCode;
++
++    @Column(name = "s_id", nullable = false, length = 20, unique = true) // c_id 를 고유(unique)하게 처리
++    private String sId;
++
++    @Column(name = "s_pw", nullable = false, length = 16)
++    private String sPw;
++
++    @Column(name = "s_name", nullable = false, length = 100)
++    private String sName;
++
++    @Column(name = "s_phone", length = 13)
++    private String sPhone;
++
++    @Column(name = "s_addr", length = 100)
++    private String sAddr;
++
++    @Column(name = "s_email", length = 30, unique = true) // c_email 을 고유(unique)하게 처리
++    private String sEmail;
++
++    // regDate MySQL에서는 Date 를 타입을 java 에서 받을때 java.sql.Date로 받는다는데
++    // @Column(name = "s_regdate", nullable = false)
++    // private Date sId;
++    @Column(name = "s_regdate", nullable = false)
++    private Date sRegDate; // import java.sql.Date; 를 위에 적어버렸
++
++    @Column(name = "s_statue", nullable = false, length = 10)
++    private String sStatus;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 학생은 한 가지의 상태를 가진다.
++    @Column(name = "p_code", length = 10)
++    private String pCode;
++
++    @ManyToOne(fetch = FetchType.EAGER) // 여러 학생은 한 가지의 학과를 가진다 ??????
++    @Column(name = "d_code", length = 10)
++    private String dCode;
++}
+Index: back/src/main/java/com/ssportal/back/controller/ClassController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/controller/ClassController.java b/back/src/main/java/com/ssportal/back/controller/ClassController.java
+new file mode 100644
+--- /dev/null	(date 1697125270633)
++++ b/back/src/main/java/com/ssportal/back/controller/ClassController.java	(date 1697125270633)
+@@ -0,0 +1,12 @@
++package com.ssportal.back.controller;
++
++
++import org.springframework.stereotype.Controller;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestMapping;
++
++@Controller
++@RequestMapping("/class")
++public class ClassController {
++
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/ClassTime.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/ClassTime.java b/back/src/main/java/com/ssportal/back/model/entity/ClassTime.java
+new file mode 100644
+--- /dev/null	(date 1697125270641)
++++ b/back/src/main/java/com/ssportal/back/model/entity/ClassTime.java	(date 1697125270641)
+@@ -0,0 +1,23 @@
++package com.ssportal.back.model.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++import lombok.Setter;
++
++@Data
++@Entity
++@Table(name="ClassTime")
++@NoArgsConstructor
++@Getter
++@Setter
++public class ClassTime {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    @Column(name="t_code", nullable = false, length = 10)
++    private String tCode;
++
++    @Column(name="t_time",nullable = false, length = 30)
++    private String tTime;
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/Professor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Professor.java b/back/src/main/java/com/ssportal/back/model/entity/Professor.java
+new file mode 100644
+--- /dev/null	(date 1697125270657)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Professor.java	(date 1697125270657)
+@@ -0,0 +1,33 @@
++package com.ssportal.back.model.entity;
++
++import jakarta.persistence.*;
++import lombok.Data;
++
++@Data
++@Entity
++@Table(name="Professor")
++public class Professor {
++
++    @Id
++    @Column(name = "p_code", nullable = false)
++    private String Pcode;
++
++    @Column(name = "p_id", length = 20, nullable = false)
++    private String pId;
++
++    @Column(name = "p_pw", length = 16, nullable = false)
++    private String pPw;
++
++    @Column(name = "p_name", length = 30, nullable = false)
++    private String pName;
++
++    @Column(name = "p_phone", length = 13)
++    private String pPhone;
++
++    @Column(name = "p_email", length = 30)
++    private String pEmail;
++
++    @Column(name = "d_code", length = 10)
++    private String dCode;
++
++}
+Index: back/src/main/java/com/ssportal/back/model/entity/Class.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/back/src/main/java/com/ssportal/back/model/entity/Class.java b/back/src/main/java/com/ssportal/back/model/entity/Class.java
+new file mode 100644
+--- /dev/null	(date 1697125270638)
++++ b/back/src/main/java/com/ssportal/back/model/entity/Class.java	(date 1697125270638)
+@@ -0,0 +1,45 @@
++package com.ssportal.back.model.entity;
++
++
++import com.ssportal.back.model.entity.enums.Ctype;
++import jakarta.persistence.*;
++import lombok.*;
++import org.springframework.boot.autoconfigure.domain.EntityScan;
++
++
++@Data
++@Entity
++@Table(name="Class")
++@NoArgsConstructor
++@Getter
++@Setter
++public class Class {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    @Column(name="c_code", nullable = false, length = 10)
++    private String cCode;
++
++    @Column(name="c_name",nullable = false, length = 30)
++    private String cName;
++
++    @Column(name="c_classroom", nullable = false, length = 30)
++    private String cClassroom;
++
++    @Column(name="c_grade", nullable = false)
++    private int cGrade;
++
++    @Column(name="c_maxstudent", nullable = false)
++    private long cMaxstudent;
++
++    @Column(name="c_type", columnDefinition = "TINYINT DEFAULT 0")
++    @Enumerated(EnumType.ORDINAL)
++    private Ctype cType = Ctype.MINOR;
++
++    @ManyToOne(fetch = FetchType.LAZY) // 여러 강의는 한 명의 교수를 가진다.
++    @JoinColumn(name="p_code")
++    private Professor professor;//객체를 담아야함.
++
++    @ManyToOne(fetch= FetchType.LAZY)
++    @JoinColumn(name="t_code")
++    private ClassTime classTime;//객체를 담아야함
++}
+diff --git a/back/.gradle/vcs-1/gc.properties b/back/.gradle/vcs-1/gc.properties
+deleted file mode 100644
+diff --git a/back/.gradle/8.2.1/gc.properties b/back/.gradle/8.2.1/gc.properties
+deleted file mode 100644
+diff --git a/back/.gradle/8.2.1/dependencies-accessors/gc.properties b/back/.gradle/8.2.1/dependencies-accessors/gc.properties
+deleted file mode 100644
